@@ -7,6 +7,7 @@ using Payment = CarRentalManagement.Module.Database.Payment;
 using DevExpress.ExpressApp.Xpo;
 using static System.Net.Mime.MediaTypeNames;
 using System.Drawing.Text;
+using CarRentalManagement.Module.Controllers;
 namespace CarRentalManangementApi.Controllers 
 {
     [Route("api/[controller]")]
@@ -19,6 +20,8 @@ namespace CarRentalManangementApi.Controllers
         {
              _unitOfWork = unitOfWork;
         }
+        private readonly CarRentalManagement.Module.Controllers.PaymentController _paymentController;
+
 
         [HttpGet]
        // [ProducesResponseType(typeof(Payment[]), StatusCodes.Status200OK)]
@@ -92,7 +95,7 @@ namespace CarRentalManangementApi.Controllers
         {
             try
             {
-                
+
                 Payment payment = _unitOfWork.GetObjectByKey<Payment>(paymentId);
                 if (payment != null)
                 {
@@ -108,6 +111,35 @@ namespace CarRentalManangementApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        
+
+
+
+        //   put
+        //[HttpPut("{paymentId}")]
+        //public IActionResult Put(Int64 paymentId)
+        //{
+        //    try
+        //    {
+
+        //        Payment payment = _unitOfWork.GetObjectByKey<Payment>(paymentId);
+        //        if (payment != null)
+        //        {
+        //            //    payment.paymentAmount = paymentAmount;
+        //            // Create an instance of PaymentController
+        //            //  var paymentController1 = new CarRentalManagement.Module.Controllers.PaymentController();
+        //            // paymentController1.ProcessPayments(payment);
+
+        //            _paymentController.ProcessPayments(payment);
+        //            _unitOfWork.Save(payment);
+        //            _unitOfWork.CommitChanges();
+        //            return Ok(payment);
+        //        }
+        //        return NotFound();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
     }
 }
