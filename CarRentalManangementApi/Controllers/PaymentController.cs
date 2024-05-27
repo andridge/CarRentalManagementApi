@@ -6,6 +6,7 @@ using DevExpress.Xpo;
 using Payment = CarRentalManagement.Module.Database.Payment;
 using DevExpress.ExpressApp.Xpo;
 using static System.Net.Mime.MediaTypeNames;
+using System.Drawing.Text;
 namespace CarRentalManangementApi.Controllers 
 {
     [Route("api/[controller]")]
@@ -22,6 +23,8 @@ namespace CarRentalManangementApi.Controllers
         [HttpGet]
        // [ProducesResponseType(typeof(Payment[]), StatusCodes.Status200OK)]
       //  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+      //get all 
         public  IActionResult Get()
         {
             try
@@ -43,6 +46,7 @@ namespace CarRentalManangementApi.Controllers
             }
         }
 
+        //get with index
         [HttpGet("{paymentId}")]
         public IActionResult Get(Int64 paymentId)
         {
@@ -82,17 +86,19 @@ namespace CarRentalManangementApi.Controllers
         }
 
 
-
+        //put
         [HttpPut("{paymentId}")]
-        public IActionResult Put(Int64 paymentId )
+        public IActionResult Put(Int64 paymentId, [FromBody] decimal paymentAmount)
         {
             try
             {
+                
                 Payment payment = _unitOfWork.GetObjectByKey<Payment>(paymentId);
                 if (payment != null)
                 {
-                    payment.paymentStatus = paymentStatus.paid;
-                    //     _unitOfWork.Save(payment);
+                    payment.paymentAmount = paymentAmount;
+                    _unitOfWork.Save(payment);
+                    _unitOfWork.CommitChanges();
                     return Ok(payment);
                 }
                 return NotFound();
@@ -102,5 +108,6 @@ namespace CarRentalManangementApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        
     }
 }
